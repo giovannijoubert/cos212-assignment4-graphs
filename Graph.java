@@ -7,11 +7,22 @@
  * You may add your own classes and function but you may not modify any of
  * the given attribute names or given method signatures.
  */
-public class Graph {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Graph {
+    private Integer maxLevel;
+    private Integer maxRow;
+    private Integer maxCol;
+    private List<Vertex> verticesList;
+    
     public Graph() {
-        
+        this.verticesList = new ArrayList<>();
     }
+
+    public void addVertex(Vertex vertex) {
+		this.verticesList.add(vertex);
+	}
 
     /**
      * Create a new graph to represent the given maze.
@@ -20,6 +31,204 @@ public class Graph {
      */
     public void createGraphFrom3DMaze(Character[][][] maze) {
         // TODO: Your code here...
+        maxLevel = maze.length-1;
+
+        if(maze[0] == null) return; //prevent nullpointerexceptions
+        maxRow = maze[0].length-1;
+        
+        if(maze[0][0] == null) return; //prevent nullpointerexceptions
+        maxCol = maze[0][0].length-1;
+
+        char currentChar;
+        Vertex addMe = null;
+        Vertex addMeNewNeighbor = null;
+        
+        for(int level = 0; level <= maxLevel; level++){
+            for(int row = 0; row <= maxRow; row++){
+                for(int col = 0; col <= maxCol; col++){
+                    currentChar = maze[level][row][col]; //used to check special directions for neighbors
+                    if(maze[level][row][col] == 'x') continue; //wall do nothing
+                    if(getVertex(level, row, col) != null){//already created vertex, check if all neighbors are created
+                        if(currentChar == '.') continue; //normal block connection is handled on creation
+                            addMe = getVertex(level, row, col);
+                            if(currentChar == 'u'){ //up
+                                if(level+1 <= maxLevel)
+                                    if(getVertex(level+1, row, col) != null){ //neighbor already exists simply connect
+                                        if(!addMe.isNeighbor(getVertex(level+1, row, col))){ //check if already connected
+                                            addMe.addNeighbor(getVertex(level+1, row, col));
+                                            getVertex(level+1, row, col).addNeighbor(addMe);
+                                        }
+                                    } else {
+                                        addMeNewNeighbor = new Vertex(level+1, row, col);
+                                        addMe.addNeighbor(addMeNewNeighbor);
+                                        addMeNewNeighbor.addNeighbor(addMe);
+                                        addVertex(addMeNewNeighbor);
+                                    }
+                            }
+        
+                            if(currentChar == 'd'){ //down
+                                if(level-1 >= 0)
+                                    if(getVertex(level-1, row, col) != null){ //neighbor already exists simply connect
+                                        if(!addMe.isNeighbor(getVertex(level-1, row, col))){ //check if already connected
+                                            addMe.addNeighbor(getVertex(level-1, row, col));
+                                            getVertex(level-1, row, col).addNeighbor(addMe);
+                                        }
+                                    } else {
+                                        addMeNewNeighbor = new Vertex(level-1, row, col);
+                                        addMe.addNeighbor(addMeNewNeighbor);
+                                        addMeNewNeighbor.addNeighbor(addMe);
+                                        addVertex(addMeNewNeighbor);
+                                    }
+                            }
+        
+                            if(currentChar == 'b'){ //both
+                                if(level-1 >= 0) //down
+                                    if(getVertex(level-1, row, col) != null){ //neighbor already exists simply connect
+                                        if(!addMe.isNeighbor(getVertex(level-1, row, col))){ //check if already connected
+                                            addMe.addNeighbor(getVertex(level-1, row, col));
+                                            getVertex(level-1, row, col).addNeighbor(addMe);
+                                        }
+                                    } else {
+                                        addMeNewNeighbor = new Vertex(level-1, row, col);
+                                        addMe.addNeighbor(addMeNewNeighbor);
+                                        addMeNewNeighbor.addNeighbor(addMe);
+                                        addVertex(addMeNewNeighbor);
+                                    }
+        
+                                    if(level+1 <= maxLevel) //up
+                                    if(getVertex(level+1, row, col) != null){ //neighbor already exists simply connect
+                                        if(!addMe.isNeighbor(getVertex(level+1, row, col))){ //check if already connected
+                                            addMe.addNeighbor(getVertex(level+1, row, col));
+                                            getVertex(level+1, row, col).addNeighbor(addMe);
+                                        }
+                                    } else {
+                                        addMeNewNeighbor = new Vertex(level+1, row, col);
+                                        addMe.addNeighbor(addMeNewNeighbor);
+                                        addMeNewNeighbor.addNeighbor(addMe);
+                                        addVertex(addMeNewNeighbor);
+                                    }
+                            }
+
+                        
+                        continue; 
+                    } 
+
+
+                    //CREATE NEW VERTEX, NOT IN ANY NEIGHBOR LISTS YET
+                    addMe = new Vertex(level, row, col); // create vertex
+                    addVertex(addMe);
+
+                    //check all directions for possible neighbors (normal block)
+
+                    // RIGHT
+                    if(col+1 <= maxCol)
+                        if(maze[level][row][col+1] != 'x'){ 
+                            if(getVertex(level, row, col+1) != null){ //neighbor already exists simply connect
+                                addMe.addNeighbor(getVertex(level, row, col+1));
+                                getVertex(level, row, col+1).addNeighbor(addMe);
+                            } else {
+                                addMeNewNeighbor = new Vertex(level, row, col+1);
+                                addMe.addNeighbor(addMeNewNeighbor);
+                                addMeNewNeighbor.addNeighbor(addMe);
+                                addVertex(addMeNewNeighbor);
+                            }
+                        } 
+
+                    // LEFT
+                    if(col-1 >= 0)
+                    if(maze[level][row][col-1] != 'x'){ 
+                        if(getVertex(level, row, col-1) != null){ //neighbor already exists simply connect
+                            addMe.addNeighbor(getVertex(level, row, col-1));
+                            getVertex(level, row, col-1).addNeighbor(addMe);
+                        } else {
+                            addMeNewNeighbor = new Vertex(level, row, col-1);
+                            addMe.addNeighbor(addMeNewNeighbor);
+                            addMeNewNeighbor.addNeighbor(addMe);
+                            addVertex(addMeNewNeighbor);
+                        }
+                    } 
+
+                     // UP
+                     if(row-1 >= 0)
+                     if(maze[level][row-1][col] != 'x'){ 
+                         if(getVertex(level, row-1, col) != null){ //neighbor already exists simply connect
+                             addMe.addNeighbor(getVertex(level, row-1, col));
+                             getVertex(level, row-1, col).addNeighbor(addMe);
+                         } else {
+                             addMeNewNeighbor = new Vertex(level, row-1, col);
+                             addMe.addNeighbor(addMeNewNeighbor);
+                             addMeNewNeighbor.addNeighbor(addMe);
+                             addVertex(addMeNewNeighbor);
+                         }
+                     } 
+
+                     // DOWN
+                     if(row+1 <= maxRow)
+                     if(maze[level][row+1][col] != 'x'){ 
+                         if(getVertex(level, row+1, col) != null){ //neighbor already exists simply connect
+                             addMe.addNeighbor(getVertex(level, row+1, col));
+                             getVertex(level, row+1, col).addNeighbor(addMe);
+                         } else {
+                             addMeNewNeighbor = new Vertex(level, row+1, col);
+                             addMe.addNeighbor(addMeNewNeighbor);
+                             addMeNewNeighbor.addNeighbor(addMe);
+                             addVertex(addMeNewNeighbor);
+                         }
+                     }
+
+                     //now connect any SPECIAL neighbors
+                     if(currentChar == 'u'){ //up
+                        if(level+1 <= maxLevel)
+                            if(getVertex(level+1, row, col) != null){ //neighbor already exists simply connect
+                                addMe.addNeighbor(getVertex(level+1, row, col));
+                                getVertex(level+1, row, col).addNeighbor(addMe);
+                            } else {
+                                addMeNewNeighbor = new Vertex(level+1, row, col);
+                                addMe.addNeighbor(addMeNewNeighbor);
+                                addMeNewNeighbor.addNeighbor(addMe);
+                                addVertex(addMeNewNeighbor);
+                            }
+                     }
+
+                     if(currentChar == 'd'){ //down
+                        if(level-1 >= 0)
+                            if(getVertex(level-1, row, col) != null){ //neighbor already exists simply connect
+                                addMe.addNeighbor(getVertex(level-1, row, col));
+                                getVertex(level-1, row, col).addNeighbor(addMe);
+                            } else {
+                                addMeNewNeighbor = new Vertex(level-1, row, col);
+                                addMe.addNeighbor(addMeNewNeighbor);
+                                addMeNewNeighbor.addNeighbor(addMe);
+                                addVertex(addMeNewNeighbor);
+                            }
+                     }
+
+                     if(currentChar == 'b'){ //both
+                        if(level-1 >= 0) //down
+                            if(getVertex(level-1, row, col) != null){ //neighbor already exists simply connect
+                                addMe.addNeighbor(getVertex(level-1, row, col));
+                                getVertex(level-1, row, col).addNeighbor(addMe);
+                            } else {
+                                addMeNewNeighbor = new Vertex(level-1, row, col);
+                                addMe.addNeighbor(addMeNewNeighbor);
+                                addMeNewNeighbor.addNeighbor(addMe);
+                                addVertex(addMeNewNeighbor);
+                            }
+
+                            if(level+1 <= maxLevel) //up
+                            if(getVertex(level+1, row, col) != null){ //neighbor already exists simply connect
+                                addMe.addNeighbor(getVertex(level+1, row, col));
+                                getVertex(level+1, row, col).addNeighbor(addMe);
+                            } else {
+                                addMeNewNeighbor = new Vertex(level+1, row, col);
+                                addMe.addNeighbor(addMeNewNeighbor);
+                                addMeNewNeighbor.addNeighbor(addMe);
+                                addVertex(addMeNewNeighbor);
+                            }
+                     }
+                }
+            }
+        }
     }
 
     /**
@@ -28,8 +237,18 @@ public class Graph {
      * If the coordinates are out of bounds, return null.
      */
     public Vertex getVertex(Integer level, Integer row, Integer col) {
-        // TODO: Your code here...
-       return null; // Stub line, you can safely remove when required
+        //check bounds
+        if(level > maxLevel || level < 0) return null;
+        if(row > maxRow || row < 0) return null;
+        if(col > maxCol || col < 0) return null;
+
+       for(int i = 0; i < verticesList.size(); i++){
+           if(verticesList.get(i).coords.equals(level, row, col)){
+               return verticesList.get(i);
+           }
+       }
+
+       return null;  //not found
     }
 
     /**
@@ -38,7 +257,11 @@ public class Graph {
      */
     public Vertex[] getAllVertices() {
         // TODO: Your code here...
-        return null; // Stub line, you can safely remove when required
+        Vertex[] out = new Vertex[verticesList.size()];
+        for(int i = 0; i < verticesList.size(); i++){
+            out[i] = verticesList.get(i);
+        }
+        return out;
     }
 
     /**

@@ -20,6 +20,14 @@ public class Vertex {
     public void addNeighbor(Vertex vertex) {
 		this.neighbors.add(vertex);
     }
+
+    public Vertex[] getAllNeighbors(){
+        Vertex[] out = new Vertex[neighbors.size()];
+        for(int i = 0; i < neighbors.size(); i++){
+            out[i] = neighbors.get(i);
+        }
+        return out;
+    }
     
     public boolean isNeighbor(Vertex vertex){
         for(int i = 0; i < neighbors.size(); i++)
@@ -28,8 +36,10 @@ public class Vertex {
         return false;
     }
 
-    public void print(){
+    public void print(boolean Neigh){
+      //  System.out.println("Vertex");
         System.out.print(coords.level + "," + coords.row + "," + coords.col);
+        if(Neigh)
         for(int i = 0; i < neighbors.size(); i ++){
             System.out.print(" - " + neighbors.get(i).coords.level + "," + neighbors.get(i).coords.row + "," + neighbors.get(i).coords.col);
         }

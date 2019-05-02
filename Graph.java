@@ -59,10 +59,12 @@ public class Graph {
                                             getVertex(level+1, row, col).addNeighbor(addMe);
                                         }
                                     } else {
-                                        addMeNewNeighbor = new Vertex(level+1, row, col);
-                                        addMe.addNeighbor(addMeNewNeighbor);
-                                        addMeNewNeighbor.addNeighbor(addMe);
-                                        addVertex(addMeNewNeighbor);
+                                        if(maze[level+1][row][col] != 'x'){
+                                            addMeNewNeighbor = new Vertex(level+1, row, col);
+                                            addMe.addNeighbor(addMeNewNeighbor);
+                                            addMeNewNeighbor.addNeighbor(addMe);
+                                            addVertex(addMeNewNeighbor);
+                                        }
                                     }
                             }
         
@@ -74,10 +76,12 @@ public class Graph {
                                             getVertex(level-1, row, col).addNeighbor(addMe);
                                         }
                                     } else {
+                                        if(maze[level-1][row][col] != 'x'){
                                         addMeNewNeighbor = new Vertex(level-1, row, col);
                                         addMe.addNeighbor(addMeNewNeighbor);
                                         addMeNewNeighbor.addNeighbor(addMe);
                                         addVertex(addMeNewNeighbor);
+                                        }
                                     }
                             }
         
@@ -89,10 +93,12 @@ public class Graph {
                                             getVertex(level-1, row, col).addNeighbor(addMe);
                                         }
                                     } else {
+                                        if(maze[level-1][row][col] != 'x'){
                                         addMeNewNeighbor = new Vertex(level-1, row, col);
                                         addMe.addNeighbor(addMeNewNeighbor);
                                         addMeNewNeighbor.addNeighbor(addMe);
                                         addVertex(addMeNewNeighbor);
+                                        }
                                     }
         
                                     if(level+1 <= maxLevel) //up
@@ -102,10 +108,12 @@ public class Graph {
                                             getVertex(level+1, row, col).addNeighbor(addMe);
                                         }
                                     } else {
+                                        if(maze[level+1][row][col] != 'x'){
                                         addMeNewNeighbor = new Vertex(level+1, row, col);
                                         addMe.addNeighbor(addMeNewNeighbor);
                                         addMeNewNeighbor.addNeighbor(addMe);
                                         addVertex(addMeNewNeighbor);
+                                        }
                                     }
                             }
 
@@ -127,10 +135,12 @@ public class Graph {
                                 addMe.addNeighbor(getVertex(level, row, col+1));
                                 getVertex(level, row, col+1).addNeighbor(addMe);
                             } else {
+                                if(maze[level][row][col+1] != 'x'){
                                 addMeNewNeighbor = new Vertex(level, row, col+1);
                                 addMe.addNeighbor(addMeNewNeighbor);
                                 addMeNewNeighbor.addNeighbor(addMe);
                                 addVertex(addMeNewNeighbor);
+                                }
                             }
                         } 
 
@@ -141,10 +151,12 @@ public class Graph {
                             addMe.addNeighbor(getVertex(level, row, col-1));
                             getVertex(level, row, col-1).addNeighbor(addMe);
                         } else {
+                            if(maze[level][row][col-1] != 'x'){
                             addMeNewNeighbor = new Vertex(level, row, col-1);
                             addMe.addNeighbor(addMeNewNeighbor);
                             addMeNewNeighbor.addNeighbor(addMe);
                             addVertex(addMeNewNeighbor);
+                            }
                         }
                     } 
 
@@ -155,10 +167,12 @@ public class Graph {
                              addMe.addNeighbor(getVertex(level, row-1, col));
                              getVertex(level, row-1, col).addNeighbor(addMe);
                          } else {
+                            if(maze[level][row-1][col] != 'x'){
                              addMeNewNeighbor = new Vertex(level, row-1, col);
                              addMe.addNeighbor(addMeNewNeighbor);
                              addMeNewNeighbor.addNeighbor(addMe);
                              addVertex(addMeNewNeighbor);
+                            }
                          }
                      } 
 
@@ -169,10 +183,12 @@ public class Graph {
                              addMe.addNeighbor(getVertex(level, row+1, col));
                              getVertex(level, row+1, col).addNeighbor(addMe);
                          } else {
+                            if(maze[level][row+1][col] != 'x'){
                              addMeNewNeighbor = new Vertex(level, row+1, col);
                              addMe.addNeighbor(addMeNewNeighbor);
                              addMeNewNeighbor.addNeighbor(addMe);
                              addVertex(addMeNewNeighbor);
+                            }
                          }
                      }
 
@@ -183,10 +199,12 @@ public class Graph {
                                 addMe.addNeighbor(getVertex(level+1, row, col));
                                 getVertex(level+1, row, col).addNeighbor(addMe);
                             } else {
+                                if(maze[level+1][row][col] != 'x'){
                                 addMeNewNeighbor = new Vertex(level+1, row, col);
                                 addMe.addNeighbor(addMeNewNeighbor);
                                 addMeNewNeighbor.addNeighbor(addMe);
                                 addVertex(addMeNewNeighbor);
+                                }
                             }
                      }
 
@@ -196,10 +214,12 @@ public class Graph {
                                 addMe.addNeighbor(getVertex(level-1, row, col));
                                 getVertex(level-1, row, col).addNeighbor(addMe);
                             } else {
+                                if(maze[level-1][row][col] != 'x'){
                                 addMeNewNeighbor = new Vertex(level-1, row, col);
                                 addMe.addNeighbor(addMeNewNeighbor);
                                 addMeNewNeighbor.addNeighbor(addMe);
                                 addVertex(addMeNewNeighbor);
+                                }
                             }
                      }
 
@@ -209,10 +229,12 @@ public class Graph {
                                 addMe.addNeighbor(getVertex(level-1, row, col));
                                 getVertex(level-1, row, col).addNeighbor(addMe);
                             } else {
+                                if(maze[level-1][row][col] != 'x'){
                                 addMeNewNeighbor = new Vertex(level-1, row, col);
                                 addMe.addNeighbor(addMeNewNeighbor);
                                 addMeNewNeighbor.addNeighbor(addMe);
                                 addVertex(addMeNewNeighbor);
+                                }
                             }
 
                             if(level+1 <= maxLevel) //up
@@ -220,10 +242,12 @@ public class Graph {
                                 addMe.addNeighbor(getVertex(level+1, row, col));
                                 getVertex(level+1, row, col).addNeighbor(addMe);
                             } else {
+                                if(maze[level+1][row][col] != 'x'){
                                 addMeNewNeighbor = new Vertex(level+1, row, col);
                                 addMe.addNeighbor(addMeNewNeighbor);
                                 addMeNewNeighbor.addNeighbor(addMe);
                                 addVertex(addMeNewNeighbor);
+                                }
                             }
                      }
                 }
@@ -271,8 +295,12 @@ public class Graph {
      * If the vertex does not exist, return null.
      */
     public Vertex[] getAdjacentVertices(Vertex vertex) {
-        // TODO: Your code here...
-        return null; // Stub line, you can safely remove when required
+        Vertex getMyNeighbors = getVertex(vertex.coords.level, vertex.coords.row, vertex.coords.col);
+        if(getMyNeighbors == null){
+            return null;
+        }
+
+        return getMyNeighbors.getAllNeighbors(); 
     }
 
     /** 

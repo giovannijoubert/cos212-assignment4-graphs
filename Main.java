@@ -111,6 +111,9 @@ public class Main {
         myMaze[2][1][3] = '.';
         myMaze[2][2][3] = 'd'; */
 
+  //      myMaze = new Character[1][1][1];
+    //    myMaze[0][0][0] = '.';
+
         myGraph.createGraphFrom3DMaze(myMaze);
 
         Vertex[] createdVertexes = myGraph.getAllVertices();

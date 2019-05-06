@@ -58,7 +58,11 @@ public class Main {
         Coordinates start  = new Coordinates(0, 1, 2);
         Coordinates end  = new Coordinates(1, 1, 1);
 
-        myGraph.getLongestPath(start, end);
+       Vertex[] path = myGraph.getLongestPath(start, end);
+       System.out.println("LENGTH: " + myGraph.getLongestPathLength(start,end));
+        for (int i = 0; i< path.length; i++){
+            path[i].print(false); System.out.println(" -> ");
+        } 
 
      //   System.out.println("HEREO");
 

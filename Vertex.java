@@ -10,15 +10,18 @@ public class Vertex {
    
     public Coordinates coords;
     public Vertex predecessor; 
+    public Vertex altpredecessor; 
     public Integer currDist;
     public boolean checked;
-
+    public String name;
     private List<Vertex> neighbors;
     
     public Vertex(Integer level, Integer row, Integer col) {
+        name = level.toString(level) + row.toString(row) + col.toString(col);
         coords = new Coordinates(level, row, col);
         this.neighbors = new ArrayList<>();
         predecessor = null;
+        altpredecessor = null;
         currDist = Integer.MIN_VALUE;
         checked = false;
     }

@@ -158,8 +158,11 @@ public class Graph {
      * You may assume there will only be one longest path.
      */
     public Integer getLongestPathLength(Coordinates start, Coordinates end) {
-        // TODO: Your code here...
-        return null; // Stub line, you can safely remove when required
+       if(getLongestPath(start, end) == null) return null;
+       
+       if(getLongestPath(start, end).length == 0) return null;
+
+       return getLongestPath(start, end).length-1;
     }
 
     /**
@@ -172,33 +175,71 @@ public class Graph {
     public Vertex[] getLongestPath(Coordinates start, Coordinates end) {
         Vertex StartVert = getVertex(start.level, start.row, start.col);
         Vertex EndVert = getVertex(end.level, end.row, end.col);
+
         if(StartVert == null || EndVert == null) return null; //one of the coordinates don't exist
 
+        if(StartVert == EndVert){
+            Vertex[] out = new Vertex[0];
+            return out;
+        } 
+       
         List<Vertex> toBeChecked = new ArrayList<>();
         StartVert.currDist = 0;
         toBeChecked.add(StartVert);
 
-        Vertex v = null;
+        Vertex v, u = null;
         Vertex [] adjacent = null;
 
-        while(toBeChecked.size() != 0){
+        while(toBeChecked.size() > 0){
             v = toBeChecked.get(0);
             toBeChecked.remove(0);
-            v.checked = true;
-            adjacent = getAdjacentVertices(v);
-            for(int u = 0; u < adjacent.length; u++){
-                if(adjacent[u].currDist < v.currDist + 1){
-                    adjacent[u].currDist = v.currDist + 1;
-                    adjacent[u].predecessor = v;
+            adjacent = v.getAllNeighbors();
+            for(int i = 0; i < adjacent.length; i++){
+                u = adjacent[i];
 
-                    if(!toBeChecked.contains(adjacent[u]) && adjacent[u].checked == false)
-                        toBeChecked.add(adjacent[u]);
+                if(u.checked){         
+                    if(u != v.predecessor)
+                    if(u.currDist <= v.currDist + 1){
+                        Vertex [] subAdj = u.getAllNeighbors();
+                        for(int k = 0; k < subAdj.length; k++)
+                            if(subAdj[k] != u)
+                                if(subAdj[k].currDist < v.currDist+2){
+                                    u.currDist = v.currDist +1;
+                                    u.predecessor = v;
+                                    u.checked = true;
+                                }   
+                    }
+                }
+
+                if(u != v.predecessor && u.checked == false)
+                if(u.currDist < v.currDist + 1){
+                    u.currDist = v.currDist +1;
+                    u.predecessor = v;
+                    u.checked = true;
+                    if(!toBeChecked.contains(u) && u != EndVert)
+                        toBeChecked.add(u);
                 }
             }
         }
-        
-        System.out.println("LENGTH: " + EndVert.currDist);
-        return null; // Stub line, you can safely remove when required
+        List<Vertex> outList = new ArrayList<>();    
+        Vertex Traverse = EndVert;
+
+        while(Traverse != null){
+            outList.add(Traverse);
+            Traverse = Traverse.predecessor;
+        }
+
+        if(outList.size() <= 1){
+            Vertex[] out = new Vertex[0];
+            return out;
+        }
+
+        Vertex[] out = new Vertex[outList.size()];
+        for(int i = 0; i < out.length; i++){
+            out[i] = outList.get(outList.size()-i-1);
+        }
+
+        return out;
     }
 
 }

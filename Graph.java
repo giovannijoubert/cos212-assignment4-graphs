@@ -170,7 +170,34 @@ public class Graph {
      * You may assume there will be only one longest path.
      */
     public Vertex[] getLongestPath(Coordinates start, Coordinates end) {
-        // TODO: Your code here...
+        Vertex StartVert = getVertex(start.level, start.row, start.col);
+        Vertex EndVert = getVertex(end.level, end.row, end.col);
+        if(StartVert == null || EndVert == null) return null; //one of the coordinates don't exist
+
+        List<Vertex> toBeChecked = new ArrayList<>();
+        StartVert.currDist = 0;
+        toBeChecked.add(StartVert);
+
+        Vertex v = null;
+        Vertex [] adjacent = null;
+
+        while(toBeChecked.size() != 0){
+            v = toBeChecked.get(0);
+            toBeChecked.remove(0);
+            v.checked = true;
+            adjacent = getAdjacentVertices(v);
+            for(int u = 0; u < adjacent.length; u++){
+                if(adjacent[u].currDist < v.currDist + 1){
+                    adjacent[u].currDist = v.currDist + 1;
+                    adjacent[u].predecessor = v;
+
+                    if(!toBeChecked.contains(adjacent[u]) && adjacent[u].checked == false)
+                        toBeChecked.add(adjacent[u]);
+                }
+            }
+        }
+        
+        System.out.println("LENGTH: " + EndVert.currDist);
         return null; // Stub line, you can safely remove when required
     }
 
